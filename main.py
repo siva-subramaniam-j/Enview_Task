@@ -6,7 +6,7 @@ import pytz
 app = Flask(__name__)
 global alert_idd
 alert_idd=1
-global unsafe_events
+
 utc=pytz.UTC
 # In-memory data structures
 events = []  # List to store driving events
@@ -104,6 +104,6 @@ def get_alert(alert_id):
 scheduler = BackgroundScheduler()     #Initializing Schedular to check for rule
 
 if __name__ == '__main__':
-    scheduler.add_job(evaluate_rule, 'interval', seconds=15)
+    scheduler.add_job(evaluate_rule, 'interval', minutes=5)
     scheduler.start()
     a=threading.Thread(target=lambda: app.run(host='localhost', port=5000, debug=True, use_reloader=False)).start()

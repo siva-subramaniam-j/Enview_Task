@@ -3,10 +3,15 @@ import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 import threading
 import pytz
-app = Flask(__name__)
-global alert_idd
-alert_idd=1
+from flask_ngrok import run_with_ngrok
 
+
+global alert_idd
+app = Flask(__name__)
+run_with_ngrok(app)
+
+
+alert_idd=1
 utc=pytz.UTC
 # In-memory data structures
 events = []  # List to store driving events
@@ -106,4 +111,4 @@ scheduler = BackgroundScheduler()     #Initializing Schedular to check for rule
 if __name__ == '__main__':
     scheduler.add_job(evaluate_rule, 'interval', minutes=5)
     scheduler.start()
-    a=threading.Thread(target=lambda: app.run(host='localhost', port=5000, debug=True, use_reloader=False)).start()
+    a=threading.Thread(target=lambda: app.run()).start()
